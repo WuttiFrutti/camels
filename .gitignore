@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/uno-server/node_modules
 /.pnp
 .pnp.js
 
