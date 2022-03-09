@@ -15,11 +15,12 @@ const CreateGameModal = () => {
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [fields, setFields] = useState({
         roomId: "",
+        words: ""
     })
 
     const start = (e) => {
         e.preventDefault();
-        axios.post("game", { settings: { roomId: fields.roomId === "" ? null : fields.roomId } })
+        axios.post("game", { settings: { roomId: fields.roomId === "" ? null : fields.roomId, words: fields.words } })
             .then(res => {
                 history.push("/view")
             }).catch(defaultCatch);
@@ -39,6 +40,12 @@ const CreateGameModal = () => {
                 <Form.Text className="text-muted">
                     Name that others use to enter the game. Leave blank for auto-generated
                 </Form.Text>
+            </Form.Group>
+            <Form.Group className="mt-3">
+                <Form.Control required value={fields["words"]} onChange={e => setField({ words: e.target.value.split(",") })} as="textarea" type="textarea" placeholder="Words" />
+                <Form.Label className="text-muted">
+                    Words used in the game. Split with ",".
+                </Form.Label>
             </Form.Group>
             <div className="d-flex justify-content-between">
                 <Button variant="primary" type="submit">

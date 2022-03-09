@@ -1,8 +1,14 @@
 #root,
 body {
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    // overflow: hidden;
     background: url("desert-png-pic-background.png");
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    background-position: bottom;
+    background-position-y: bottom;
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 

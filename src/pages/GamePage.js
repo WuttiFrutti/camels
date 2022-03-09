@@ -43,7 +43,7 @@ const GamePage = () => {
 
     const submit = async (e) => {
         e.preventDefault();
-        await _axios.post("game/advance", { word: morse });
+        await _axios.post("game/advance", { word: morse.replaceAll("/"," ") });
         refreshGameState();
         setMorse("");
     }
@@ -79,12 +79,12 @@ const GamePage = () => {
                                         <Form.Label>Woord: { word }</Form.Label>
                                         <Form.Control readOnly value={morse} type="text" placeholder="Woord" />
                                     </Form.Group>
-                                    <Button variant="primary" className="morse-button" onMouseDown={down} onMouseUp={up}>
+                                    <Button variant="primary" className="morse-button" onTouchStart={down} onTouchEnd={up}>
                                         Press
                                     </Button>
                                     <div className='d-flex justify-content-around'>
-                                    <Button variant="primary" onClick={() => setMorse(morse + " ")}>
-                                        Whitespace
+                                    <Button variant="primary" onClick={() => setMorse(morse + "/")}>
+                                        Slash
                                     </Button>
                                     <Button variant="primary" onClick={() => setMorse("")}>
                                         Clear

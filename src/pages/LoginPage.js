@@ -67,7 +67,7 @@ const LoginPage = () => {
                     <Form.Label>Room Id</Form.Label>
                     <Form.Control required value={roomId} onChange={e => setRoomId(e.target.value)} type="text" placeholder="Enter room id" />
                 </Form.Group>
-                <Button variant="primary" disabled={hasGame} type="submit">
+                <Button className="mt-3" variant="primary" disabled={hasGame} type="submit">
                     Submit
                 </Button>
                 <hr />

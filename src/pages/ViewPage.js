@@ -56,9 +56,11 @@ const ViewPage = () => {
                 <>
                     {
                         gameState === "JOINING" ? <><div>
+                                {players.map(p =>
                             <Card className='p-3 m-2'>
-                                {players.map(p => p.username)}
-                            </Card>
+                                    {p.username}
+                            </Card>)}
+                            
                         </div>
                             <br />
                             <Button className="m-3" onClick={start}>Start</Button></> : <div className="d-flex"><div className='d-flex flex-column camel-container mt-3'>
@@ -77,19 +79,23 @@ const ViewPage = () => {
 
 const PlayerCamel = ({ player, words }) => {
     const [image, setImage] = useState("standing-camel.gif");
-    const [init, setInit] = useState(false);
+    const [oldIndex, setOldIndex] = useState(player.index);
 
     useEffect(() => {
-        if(!init) return setInit(true)
-        setImage("walking-camel.gif");
-        setTimeout(() => {
-            setImage("standing-camel.gif")
-        }, 2000)
+
+        if(oldIndex !== player.index){
+          setImage("walking-camel.gif");
+          setTimeout(() => {
+             setImage("standing-camel.gif")
+          }, 2000)
+        }
+        setOldIndex(player.index);
+        
     }, [ player ])
 
     return <div className='player-camel' style={{ left: `${(player.index / words.length) * 100}%` }}>
         <img className='img-fluid' src={image} alt="camel" />
-        <Card className="p-2">{player.username}</Card>
+        <Card className="p-2">{player.username} {player.index} / {words.length}</Card>
     </div>
 }
 

@@ -66,12 +66,7 @@ router.post('', (req, res) => {
                 throw new HttpError("Game already exists", 401);
             }
         }
-        const { owner: user, token } = Games.new(new Player("OWNER"), req.body.words || [
-            "n",
-            "a",
-            "a",
-            "b"
-        ], req.body.settings?.roomId || uuid().slice(-6));
+        const { owner: user, token } = Games.new(new Player("OWNER"), req.body.settings?.words, req.body.settings?.roomId || uuid().slice(-6));
         res.cookie("token", user.token);
         res.send({ token: token, userToken: user.token });
     } else {
