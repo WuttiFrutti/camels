@@ -1,6 +1,6 @@
 import { React } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Loginpage from "./../pages/LoginPage"
+import Loginpage from "./../pages/LoginPage";
 import GamePage from './../pages/GamePage';
 import ViewPage from './../pages/ViewPage';
 
@@ -17,7 +17,7 @@ const Routes = (props) => {
                 <Loginpage />
             </Route>
         </Switch>
-    )
-}
+    );
+};
 
 export default Routes;

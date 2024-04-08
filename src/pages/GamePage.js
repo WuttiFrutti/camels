@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import useCookie from 'react-use-cookie';
 import useWebSocket from 'react-use-websocket';
 import StatusBar from '../components/Nav';
-import { GameStore, refreshGameState, websocketReducer } from "../gameState"
+import { GameStore, refreshGameState, websocketReducer } from "../gameState";
 import { wsURL } from '../config/defaults';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -14,7 +14,7 @@ import { Container } from 'react-bootstrap';
 
 const GamePage = () => {
     const [userToken, setUserToken] = useCookie("token", false);
-    const { players, gameState, word} = GameStore.useState(s => s);
+    const { players, gameState, word } = GameStore.useState(s => s);
     const [morse, setMorse] = useState("");
     const [timer, setTimer] = useState();
 
@@ -22,7 +22,7 @@ const GamePage = () => {
         if (userToken) {
             refreshGameState();
         }
-    }, [userToken])
+    }, [userToken]);
 
     const {
         sendJsonMessage: sendMessage,
@@ -39,28 +39,28 @@ const GamePage = () => {
 
     useEffect(() => {
         GameStore.update(s => { s.sendMessage = sendMessage; s.websocketState = readyState; });
-    })
+    });
 
     const submit = async (e) => {
         e.preventDefault();
-        await _axios.post("game/advance", { word: morse.replaceAll("/"," ") });
+        await _axios.post("game/advance", { word: morse.replaceAll("/", " ") });
         refreshGameState();
         setMorse("");
-    }
+    };
 
     const down = () => {
-        console.log("yeet", Date.now())
+        console.log("yeet", Date.now());
         setTimer(Date.now());
-    }
+    };
 
     const up = () => {
-        
-        if(Date.now() - timer >= 200){
-            setMorse(morse + "-")
-        }else{
-            setMorse(morse + ".")
+
+        if (Date.now() - timer >= 200) {
+            setMorse(morse + "-");
+        } else {
+            setMorse(morse + ".");
         }
-    }
+    };
 
     return (
         <>
@@ -76,22 +76,22 @@ const GamePage = () => {
                             <Container className="mt-3">
                                 <Form onSubmit={submit}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label>Woord: { word }</Form.Label>
+                                        <Form.Label>Woord: {word}</Form.Label>
                                         <Form.Control readOnly value={morse} type="text" placeholder="Woord" />
                                     </Form.Group>
                                     <Button variant="primary" className="morse-button" onTouchStart={down} onTouchEnd={up}>
                                         Press
                                     </Button>
                                     <div className='d-flex justify-content-around'>
-                                    <Button variant="primary" onClick={() => setMorse(morse + "/")}>
-                                        Slash
-                                    </Button>
-                                    <Button variant="primary" onClick={() => setMorse("")}>
-                                        Clear
-                                    </Button>
-                                    <Button variant="primary" type="submit">
-                                        Submit
-                                    </Button>
+                                        <Button variant="primary" onClick={() => setMorse(morse + "/")}>
+                                            Slash
+                                        </Button>
+                                        <Button variant="primary" onClick={() => setMorse("")}>
+                                            Clear
+                                        </Button>
+                                        <Button variant="primary" type="submit">
+                                            Submit
+                                        </Button>
                                     </div>
                                 </Form>
                             </Container>
@@ -100,7 +100,7 @@ const GamePage = () => {
                 </>
             }
         </>
-    )
-}
+    );
+};
 
-export default GamePage
+export default GamePage;

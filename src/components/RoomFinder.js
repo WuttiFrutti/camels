@@ -7,16 +7,16 @@ const RoomFinder = () => {
 
     const setRooms = async () => {
 
-    }
+    };
 
     useEffect(() => {
 
-    }, [rooms])
+    }, [rooms]);
 
 
     return null;
 
-}
+};
 
 
 export default RoomFinder;

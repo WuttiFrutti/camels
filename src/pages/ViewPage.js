@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import useCookie from 'react-use-cookie';
 import useWebSocket from 'react-use-websocket';
 import StatusBar from '../components/Nav';
-import { GameStore, refreshGameState, websocketReducer } from "../gameState"
+import { GameStore, refreshGameState, websocketReducer } from "../gameState";
 import { wsURL } from '../config/defaults';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
 import _axios from './../config/axios';
 import Card from 'react-bootstrap/Card';
 
@@ -20,7 +20,7 @@ const ViewPage = () => {
         if (userToken) {
             refreshGameState();
         }
-    }, [userToken])
+    }, [userToken]);
 
     const {
         sendJsonMessage: sendMessage,
@@ -37,13 +37,13 @@ const ViewPage = () => {
 
     useEffect(() => {
         GameStore.update(s => { s.sendMessage = sendMessage; s.websocketState = readyState; });
-    })
+    });
 
     const start = async () => {
         await _axios.put("game/state", { state: "RUNNING" });
-    }
+    };
 
-    const getStyle = width => ({ bottom: "1rem", width: `${width}rem`, right: gameState === "JOINING" ? `calc(50% - (${width}rem / 2))` : "1rem" })
+    const getStyle = width => ({ bottom: "1rem", width: `${width}rem`, right: gameState === "JOINING" ? `calc(50% - (${width}rem / 2))` : "1rem" });
 
     return (
         <>
@@ -56,11 +56,11 @@ const ViewPage = () => {
                 <>
                     {
                         gameState === "JOINING" ? <><div>
-                                {players.map(p =>
-                            <Card className='p-3 m-2'>
+                            {players.map(p =>
+                                <Card className='p-3 m-2'>
                                     {p.username}
-                            </Card>)}
-                            
+                                </Card>)}
+
                         </div>
                             <br />
                             <Button className="m-3" onClick={start}>Start</Button></> : <div className="d-flex"><div className='d-flex flex-column camel-container mt-3'>
@@ -74,8 +74,8 @@ const ViewPage = () => {
                 </>
             }
         </>
-    )
-}
+    );
+};
 
 const PlayerCamel = ({ player, words }) => {
     const [image, setImage] = useState("standing-camel.gif");
@@ -83,20 +83,20 @@ const PlayerCamel = ({ player, words }) => {
 
     useEffect(() => {
 
-        if(oldIndex !== player.index){
-          setImage("walking-camel.gif");
-          setTimeout(() => {
-             setImage("standing-camel.gif")
-          }, 2000)
+        if (oldIndex !== player.index) {
+            setImage("walking-camel.gif");
+            setTimeout(() => {
+                setImage("standing-camel.gif");
+            }, 2000);
         }
         setOldIndex(player.index);
-        
-    }, [ player ])
+
+    }, [player]);
 
     return <div className='player-camel' style={{ left: `${(player.index / words.length) * 100}%` }}>
         <img className='img-fluid' src={image} alt="camel" />
         <Card className="p-2">{player.username} {player.index} / {words.length}</Card>
-    </div>
-}
+    </div>;
+};
 
-export default ViewPage
+export default ViewPage;

@@ -12,7 +12,7 @@ import RoomFinder from '../components/RoomFinder';
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [roomId, setRoomId] = useState("");
-    const [hasGame, setHasGame] = useState(false)
+    const [hasGame, setHasGame] = useState(false);
     const [userToken, setUserToken] = useCookie("token", false);
     const history = useHistory();
 
@@ -20,11 +20,11 @@ const LoginPage = () => {
         e.preventDefault();
         if (username && roomId) {
             axios.post("game/login", { username: username, token: roomId })
-            .then(res => {
-                history.push("/game")
-            }).catch(defaultCatch);
+                .then(res => {
+                    history.push("/game");
+                }).catch(defaultCatch);
         }
-    }
+    };
 
     const leave = () => {
         axios.delete("game")
@@ -40,7 +40,7 @@ const LoginPage = () => {
             title: "Create Game",
             body: <CreateGameModal />,
         });
-    }
+    };
 
     useEffect(() => {
         if (userToken) {
@@ -49,7 +49,7 @@ const LoginPage = () => {
                     setHasGame(true);
                 }).catch(silent);
         }
-    }, [userToken])
+    }, [userToken]);
 
     return (
         <Container className="pt-5">
@@ -81,7 +81,7 @@ const LoginPage = () => {
                     {hasGame ?
                         <div className="ml-auto">
                             It seems you are already in a game <br />
-                            <p className="mt-2 text-center" style={{verticalAlign:"middle"}}>
+                            <p className="mt-2 text-center" style={{ verticalAlign: "middle" }}>
                                 <Button onClick={() => history.push("/game")} variant="success">
                                     Join
                                 </Button>
@@ -93,9 +93,9 @@ const LoginPage = () => {
                         </div> : null}
                 </div>
             </Form>
-            <RoomFinder/>
+            <RoomFinder />
         </Container>
-    )
-}
+    );
+};
 
 export default LoginPage;

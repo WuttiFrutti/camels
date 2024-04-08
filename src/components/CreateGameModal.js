@@ -3,11 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
-import Collapse from 'react-bootstrap/Collapse';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
 import { hideModal } from './../modals';
-import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
 
 const CreateGameModal = () => {
@@ -16,20 +12,20 @@ const CreateGameModal = () => {
     const [fields, setFields] = useState({
         roomId: "",
         words: ""
-    })
+    });
 
     const start = (e) => {
         e.preventDefault();
         axios.post("game", { settings: { roomId: fields.roomId === "" ? null : fields.roomId, words: fields.words } })
             .then(res => {
-                history.push("/view")
+                history.push("/view");
             }).catch(defaultCatch);
         hideModal();
-    }
+    };
 
     const setField = (change) => {
         setFields({ ...fields, ...change });
-    }
+    };
 
 
 
@@ -54,8 +50,8 @@ const CreateGameModal = () => {
             </div>
 
         </Form>
-    </>)
+    </>);
 
-}
+};
 
 export default CreateGameModal;

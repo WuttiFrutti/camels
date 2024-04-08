@@ -13,10 +13,10 @@ const _axios = axios.create(config);
 
 
 export const defaultCatch = (err) => {
-  console.log(err.response)
-  addToast({title:"Error",message: err.response?.data?.message || "Oh no! An uncaught error happened!"});
-}
+  console.log(err.response);
+  addToast({ title: "Error", message: err.response?.data?.message || "Oh no! An uncaught error happened!" });
+};
 
-export const silent = () => {}
+export const silent = () => { };
 
 export default _axios;

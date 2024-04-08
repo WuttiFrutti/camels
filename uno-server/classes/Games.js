@@ -1,5 +1,5 @@
 const Game = require("./Game");
-const { HttpError } = require("../errors"); 
+const { HttpError } = require("../errors");
 const { GameStates } = require("../enums");
 
 class Games {
@@ -7,7 +7,7 @@ class Games {
         if (!Games.instance) {
             Games.instance = this;
         }
-        this._games = []
+        this._games = [];
     }
     getInstance() {
         return Games.instance;
@@ -20,7 +20,7 @@ class Games {
 
     get(gameToken) {
         const game = this._games.find(game => game.token === gameToken);
-        if(!game) throw new HttpError("Game not found", 404);
+        if (!game) throw new HttpError("Game not found", 404);
         return game;
     }
 
@@ -32,23 +32,23 @@ class Games {
         return this._games.find(game => game.players.find(player => player.token === playerToken));
     }
 
-    getPlayer(token){
-        for(const game of this._games){
+    getPlayer(token) {
+        for (const game of this._games) {
             const res = game.getPlayer(token);
-            if(res) return res;
+            if (res) return res;
         }
-        return null
+        return null;
     }
 
-    getId(gameToken){
+    getId(gameToken) {
         return this._games.findIndex(game => game.token === gameToken);
     }
 
-    remove(gameToken){
+    remove(gameToken) {
         this._games = this._games.filter(g => g.token !== gameToken);
     }
 
-    end(gameToken){
+    end(gameToken) {
         const game = this.get(gameToken);
         game.state = GameStates.ENDED;
     }

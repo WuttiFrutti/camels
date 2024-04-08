@@ -24,14 +24,14 @@ export const websocketReducer = async ({ data }) => {
             break;
         case "STATE_CHANGE": {
             const { data } = await axios.get("game");
-            GameStore.update(s => { s.gameState = data.state; s.word = data.word; s.players = data.players; s.words = data.words; s.you = data.you });
+            GameStore.update(s => { s.gameState = data.state; s.word = data.word; s.players = data.players; s.words = data.words; s.you = data.you; });
         }
             break;
         default:
 
             break;
     }
-}
+};
 
 export const refreshGameState = async () => {
     try {
@@ -40,9 +40,9 @@ export const refreshGameState = async () => {
             s.players = data.players;
             s.you = data.you;
             s.token = data.token;
-            s.words = data.words
+            s.words = data.words;
             s.gameState = data.state;
             s.word = data.word;
         });
     } catch (err) { }
-}
+};

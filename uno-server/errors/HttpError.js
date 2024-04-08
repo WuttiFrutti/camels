@@ -1,14 +1,14 @@
-class HttpError extends Error{
-    constructor(message, httpErrorCode){
+class HttpError extends Error {
+    constructor(message, httpErrorCode) {
         super(message);
         this.code = httpErrorCode;
     }
 
-    toJson(){
+    toJson() {
         return ({
             message: this.message,
             errorcode: this.code,
-        })
+        });
     }
 }
 

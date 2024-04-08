@@ -12,12 +12,12 @@ export const ModalElement = () => {
             <Modal.Title>{modal.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{modal.body}</Modal.Body>
-    </Modal> : null)
-}
+    </Modal> : null);
+};
 
 export const hideModal = () => {
-    ModalStore.update(s => { s.modal.show = false });
-}
+    ModalStore.update(s => { s.modal.show = false; });
+};
 export const addModal = (modal) => {
-    ModalStore.update(s => { s.modal = modal });
-}
+    ModalStore.update(s => { s.modal = modal; });
+};

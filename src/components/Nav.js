@@ -1,7 +1,5 @@
-import Nav from "react-bootstrap/Nav"
-import Navbar from "react-bootstrap/Navbar"
-
-
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
 import { useHistory } from "react-router-dom";
 import StatusCircle from "./StatusCircle";
 import { GameStore } from './../gameState';
@@ -32,7 +30,7 @@ const StatusBar = () => {
                     </Nav.Item>
                 </Nav>
             </Navbar.Collapse>
-        </Navbar>)
-}
+        </Navbar>);
+};
 
 export default StatusBar;
