@@ -7,7 +7,6 @@ const Player = require('../classes/Player');
 const { GameStates } = require('../enums');
 const { HttpError } = require("../errors");
 const { isOwner } = require('../middleware');
-const morse = require('morse-decoder');
 
 
 
@@ -32,7 +31,7 @@ router.get('', (req, res) => {
     if (game) {
         res.send(game.getInfoForPlayer(req.cookies.token));
     } else {
-        const game = Games.getGameByOwnerToken(req.cookies.token);
+        const game = Games.getGameByOwnerToken(req.cookies.token).getInfoForPlayer();
         if (game) {
             res.send(game);
         } else {
@@ -43,14 +42,9 @@ router.get('', (req, res) => {
 
 router.post("/advance", (req, res) => {
     const player = req.game.getPlayer(req.cookies.token);
-    const word = morse.decode(req.body.word).toLowerCase().replaceAll(/\s/g, "");
-    if (req.game.words[player.index] === word) {
-        player.index++;
-        req.game.owner.send({ action: "STATE_CHANGE" });
-        res.status(200).send();
-        return;
-    }
-    res.status(401).send();
+
+    const hasAdvanced = req.game.advancePlayer(player, req.body.word);
+    res.status(hasAdvanced ? 200 : 401).send();
 });
 
 router.post('', (req, res) => {

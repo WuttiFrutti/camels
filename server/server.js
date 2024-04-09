@@ -6,7 +6,6 @@ const cookieParser = require('cookie-parser');
 const { v4: uuid } = require('uuid');
 const cors = require('cors');
 const { json, urlencoded } = require('body-parser');
-const { HttpError } = require("./errors");
 const { GameStates } = require('./enums');
 const { getGame } = require("./middleware");
 
@@ -15,7 +14,7 @@ const app = express();
 
 
 app.use(cors({
-	origin: 'http://localhost:3000',
+	origin: 'http://192.168.178.108:3000',
 	credentials: true,
 }));
 app.use(json());
@@ -74,10 +73,9 @@ app.use((err, req, res, next) => {
 });
 
 const path = require('path');
-app.use(express.static(path.join(__dirname, '/../react-uno/build')));
-app.use("/game", express.static(path.join(__dirname, '/../react-uno/build')));
-
-
+app.use("/static", express.static(path.join(__dirname, '../build/static')));
+app.use(express.static(path.join(__dirname, '../build')));
+app.use("/*", express.static(path.join(__dirname, '../build')));
 
 
 const server = app.listen(process.env.PORT || 8080, () => {

@@ -2,20 +2,24 @@ import { ReadyState } from 'react-use-websocket';
 import { GameStore } from './../gameState';
 
 
-const StatusCircle = ({ state, size: s }) => {
+export const MyStatusCircle = () => {
     const connectionStatus = GameStore.useState(s => s.websocketState);
 
-    const size = s ? s + "px" : "20px";
+    return <StatusCircle state={connectionStatus} />;
+};
 
-    const color = connectionStatus === ReadyState.OPEN ? {
+const StatusCircle = ({ state, size }) => {
+    const pxSize = `${size || 20}px`
+
+    const color = {
         [ReadyState.CONNECTING]: "yellow",
         [ReadyState.OPEN]: "green",
         [ReadyState.CLOSING]: "yellow",
         [ReadyState.CLOSED]: "red",
         [ReadyState.UNINSTANTIATED]: "grey",
-    }[state] : "red";
+    }[state || -1];
 
-    return <span style={{ backgroundColor: color, width: size, height: size, borderRadius: size, display: "inline-block", verticalAlign: "middle" }}></span>;
+    return <span style={{ backgroundColor: color, width: pxSize, height: pxSize, borderRadius: pxSize, display: "inline-block", verticalAlign: "middle" }}></span>;
 
 };
 

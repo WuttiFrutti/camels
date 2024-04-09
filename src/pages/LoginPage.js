@@ -7,7 +7,6 @@ import { useHistory } from "react-router-dom";
 import useCookie from 'react-use-cookie';
 import { addModal } from '../modals';
 import CreateGameModal from './../components/CreateGameModal';
-import RoomFinder from '../components/RoomFinder';
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
@@ -32,6 +31,7 @@ const LoginPage = () => {
                 setUserToken("");
                 setHasGame(false);
             }).catch(defaultCatch);
+        window.location.reload()
     };
 
     const createNew = () => {
@@ -93,7 +93,6 @@ const LoginPage = () => {
                         </div> : null}
                 </div>
             </Form>
-            <RoomFinder />
         </Container>
     );
 };

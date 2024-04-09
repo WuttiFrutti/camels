@@ -1,60 +1,50 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import useCookie from 'react-use-cookie';
-import useWebSocket from 'react-use-websocket';
 import StatusBar from '../components/Nav';
-import { GameStore, refreshGameState, websocketReducer } from "../gameState";
-import { wsURL } from '../config/defaults';
+import { GameStore, refreshGameState } from "../gameState";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import _axios from './../config/axios';
 import { Container } from 'react-bootstrap';
-
-
+import { useWs } from '../hooks/useWs';
+import EndGame from '../components/EndGame';
+import { addToast } from '../toasts'
 
 const GamePage = () => {
-    const [userToken, setUserToken] = useCookie("token", false);
-    const { players, gameState, word } = GameStore.useState(s => s);
+
+    return <>
+        <StatusBar />
+        <Game />
+        <EndGame />
+    </>;
+};
+
+
+const Game = () => {
+    const hasToken = useWs();
+
+    const { gameState, word } = GameStore.useState(s => s);
     const [morse, setMorse] = useState("");
     const [timer, setTimer] = useState();
 
-    useEffect(() => {
-        if (userToken) {
-            refreshGameState();
-        }
-    }, [userToken]);
-
-    const {
-        sendJsonMessage: sendMessage,
-        readyState,
-    } = useWebSocket(wsURL, {
-        onMessage: websocketReducer,
-        shouldReconnect: (closeEvent) => {
-            if (closeEvent.reason === "NOT_LOGGED_IN") {
-                setUserToken("");
-            }
-            return !(closeEvent.code >= 4000 && closeEvent.code < 5000);
-        },
-    });
-
-    useEffect(() => {
-        GameStore.update(s => { s.sendMessage = sendMessage; s.websocketState = readyState; });
-    });
-
     const submit = async (e) => {
-        e.preventDefault();
-        await _axios.post("game/advance", { word: morse.replaceAll("/", " ") });
-        refreshGameState();
-        setMorse("");
+        try {
+            e.preventDefault();
+            await _axios.post("game/advance", { word: morse.replaceAll("/", " ") });
+        } catch {
+            addToast({ title: "Wrong", message: "Oh no! Your submission was incorrect..." });
+        } finally {
+            refreshGameState();
+            setMorse("");
+        }
+
     };
 
     const down = () => {
-        console.log("yeet", Date.now());
         setTimer(Date.now());
     };
 
     const up = () => {
-
         if (Date.now() - timer >= 200) {
             setMorse(morse + "-");
         } else {
@@ -62,45 +52,54 @@ const GamePage = () => {
         }
     };
 
-    return (
-        <>
-            <StatusBar />
-            {!userToken ?
-                <p className="p-3">
-                    You have to login first! go <Link to="/">here</Link>
-                </p>
-                :
-                <>
-                    {
-                        gameState === "RUNNING" ? <>
-                            <Container className="mt-3">
-                                <Form onSubmit={submit}>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Woord: {word}</Form.Label>
-                                        <Form.Control readOnly value={morse} type="text" placeholder="Woord" />
-                                    </Form.Group>
-                                    <Button variant="primary" className="morse-button" onTouchStart={down} onTouchEnd={up}>
-                                        Press
-                                    </Button>
-                                    <div className='d-flex justify-content-around'>
-                                        <Button variant="primary" onClick={() => setMorse(morse + "/")}>
-                                            Slash
-                                        </Button>
-                                        <Button variant="primary" onClick={() => setMorse("")}>
-                                            Clear
-                                        </Button>
-                                        <Button variant="primary" type="submit">
-                                            Submit
-                                        </Button>
-                                    </div>
-                                </Form>
-                            </Container>
-                        </> : null
-                    }
-                </>
-            }
-        </>
-    );
+    if (!hasToken) {
+        return <p className="p-3">
+            You have to login first! go <Link to="/">here</Link>
+        </p>;
+    }
+
+    if (gameState === "RUNNING") {
+        return <>
+            <Container className="mt-3">
+                <Form onSubmit={submit}>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Woord: {word}</Form.Label>
+                        <Form.Control readOnly value={morse} type="text" placeholder="Woord" />
+                    </Form.Group>
+                    <Button variant="primary" className="morse-button" onTouchStart={down} onTouchEnd={up}>
+                        Press
+                    </Button>
+                    <div className='d-flex justify-content-around'>
+                        <Button variant="primary" onClick={() => setMorse(morse + "/")}>
+                            Slash
+                        </Button>
+                        <Button variant="primary" onClick={() => setMorse("")}>
+                            Clear
+                        </Button>
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </div>
+                </Form>
+            </Container>
+        </>;
+    }
+
+    if (gameState === "JOINING") {
+        return <Container className="mt-3">
+            Waiting to begin...
+        </Container>;
+    }
+
+    if (gameState == "ENDED") {
+        return <p className="p-3">
+            The game has ended! go <Link to="/">here</Link>
+        </p>;
+    }
+
+    return <p className="p-3">
+        You have to login first! go <Link to="/">here</Link>
+    </p>;
 };
 
 export default GamePage;

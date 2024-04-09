@@ -12,6 +12,7 @@
     "pullstate": "^1.23.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.2.0",
+    "react-confetti-explosion": "^1.5.1",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.0",
@@ -22,10 +23,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts build && node server/server.js",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "serve": "react-scripts start",
+    "server": "node server/server.js"
   },
   "eslintConfig": {
     "extends": [

@@ -9,6 +9,8 @@ body {
     background-position-y: bottom;
     background-attachment: fixed;
     background-size: cover;
+    overflow: auto !important;
+    padding: 0 !important;
 }
 
 
@@ -65,6 +67,11 @@ body {
     width: 200px;
 }
 
+.finishline {
+    height: 100vh;
+    background-color: rgba(88, 88, 88, 0.473);
+    width: 3px;
+}
 
 .card-deck {
     position: absolute;
@@ -140,7 +147,7 @@ body {
     .draw-button{
         transform: translate(-50%, 200%);
     }
- 
+
 }
 
 .card-move{

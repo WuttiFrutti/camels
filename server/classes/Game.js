@@ -1,5 +1,6 @@
 const { v4: uuid } = require('uuid');
 const { GameStates } = require('../enums');
+const morse = require('morse-decoder');
 
 class Game {
     constructor(owner, token = uuid(), players = [], words) {
@@ -12,9 +13,8 @@ class Game {
         players.forEach(player => this.addPlayer(player));
     }
 
-
     send(message, exclude) {
-        [this.owner,...this.players].filter(p => p.token !== exclude).forEach(player => {
+        [this.owner, ...this.players].filter(p => p.token !== exclude).forEach(player => {
             player.send(message, exclude);
         });
     }
@@ -27,25 +27,25 @@ class Game {
             players: this.players.filter(player => player.token !== playerToken).map(player => player.info),
             you: {
                 owner: this.owner.token === playerToken,
-                ...player,
+                ...player.info,
             },
-            word: this.words[player.index]
+            word: this.words[player.index],
+            words: this.words
         }) : ({
-            state: this.state,
-            token: this.token,
+            ...this,
             players: this.players.map(player => ({
                 owner: this.owner.token === playerToken,
                 ...player.info,
-            }))
+            })),
         });
     }
 
     getPlayer(token) {
-        return this.players.find(player => player.token === token)
+        return this.players.find(player => player.token === token);
     }
 
     getPlayerIndex(token) {
-        return this.players.findIndex(player => player.token === token)
+        return this.players.findIndex(player => player.token === token);
     }
 
     addPlayer(player) {
@@ -62,6 +62,24 @@ class Game {
         return this.players.find(p => p.id === playerId);
     }
 
+    advancePlayer(player, morseWord) {
+        const input = morse.decode(morseWord).toLowerCase().replace(/\s/g, "");
+        const word = (this.words[player.index] || "").toLowerCase().replace(/\s/g, "")
+
+        if (input !== word) {
+            return false;
+        };
+
+        player.index++;
+        this.owner.send({ action: "STATE_CHANGE" });
+
+        if (player.index === this.words.length) {
+            this.state = GameStates.ENDED;
+            this.owner.send({ action: "GAME_END" });
+        }
+
+        return true;
+    }
 
 }
 

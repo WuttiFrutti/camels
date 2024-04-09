@@ -27,7 +27,13 @@ class Player {
     }
 
     get info() {
-        return { username: this.username, connected: this.isReady, id: this.id };
+        return {
+            username: this.username,
+            connected: this.isReady,
+            readyState: this.#ws?.readyState || -1,
+            id: this.id,
+            index: this.index
+        };
     }
 }
 

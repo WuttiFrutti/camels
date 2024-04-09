@@ -9,6 +9,7 @@ class Games {
         }
         this._games = [];
     }
+    
     getInstance() {
         return Games.instance;
     }

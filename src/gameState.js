@@ -1,10 +1,10 @@
 import { Store } from "pullstate";
 import axios from './config/axios';
-import { addToast } from './toasts';
 import { setCookie } from 'react-use-cookie';
-import { addModal } from "./modals";
 
-export const GameStore = new Store({ players: [], you: {}, word: "", words: [], token: null, websocketState: null, sendMessage: null, gameState: "JOINING" });
+const initState = { players: [], you: {}, word: "", words: [], token: null, websocketState: null, sendMessage: null, gameState: '' };
+
+export const GameStore = new Store(initState);
 
 
 export const websocketReducer = async ({ data }) => {
@@ -20,7 +20,7 @@ export const websocketReducer = async ({ data }) => {
             break;
         case "GAME_ENDED":
             setCookie("token", "");
-            addToast({ title: "Game Ended", message: "The game has ended. You cannot interact with it now" });
+            GameStore.update(initState);
             break;
         case "STATE_CHANGE": {
             const { data } = await axios.get("game");

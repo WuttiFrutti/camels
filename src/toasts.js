@@ -13,7 +13,7 @@ export const Toast = ({ title, message, id }) => {
         setTimeout(() => {
             removeToast(id);
         }, 3000);
-    }, []);
+    }, [id]);
 
     return (
         <>

@@ -8,7 +8,6 @@ import { hideModal } from './../modals';
 
 const CreateGameModal = () => {
     const history = useHistory();
-    const [settingsOpen, setSettingsOpen] = useState(false);
     const [fields, setFields] = useState({
         roomId: "",
         words: ""

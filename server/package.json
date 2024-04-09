@@ -1,5 +1,5 @@
 {
-    "name": "uno-server",
+    "name": "server",
     "scripts": {
         "start": "node server.js"
     },
